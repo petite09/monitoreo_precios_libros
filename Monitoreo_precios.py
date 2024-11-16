@@ -58,25 +58,48 @@ def registrar_precio(libro, precio):
 
     df.to_csv('precios_libros.csv', index=False)
 
+# Función para visualizar la evolución de los precios
+def visualizar_evolucion():
+    df = pd.read_csv('precios_libros.csv')
+
+    # Convertir la columna 'Fecha' a tipo datetime
+    df['Fecha'] = pd.to_datetime(df['Fecha'])
+
+    # Agrupar por título de libro y graficar cada uno
+    for libro in df['Libro'].unique():
+        df_libro = df[df['Libro'] == libro]
+        plt.plot(df_libro['Fecha'], df_libro['Precio'], marker='o', label=libro)
+
+    # Configuración del gráfico
+    plt.xlabel('Fecha')
+    plt.ylabel('Precio')
+    plt.title('Evolución de precios de los libros')
+    plt.legend()
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Mostrar el gráfico
+    plt.show()
+
 # Lista de URLs de los libros en Buscalibre
-urls_libros = [
-    "https://www.buscalibre.cl/libro-entremuros/9789878474458/p/54393883",
-    "https://www.buscalibre.cl/libro-el-pajaro-que-bebe-lagrimas-n-01-04-el-corazon-del-naga/9788445017098/p/62013231",
-    "https://www.buscalibre.cl/libro-la-era-del-mito/9789583056949/p/50543764",
-    "https://www.buscalibre.cl/libro-el-limite-del-cielo/9788410163171/p/56764769"
+libros = [
+    {"titulo": "Entremuros", "url": "https://www.buscalibre.cl/libro-entremuros/9789878474458/p/54393883"},
+    {"titulo": "El pájaro que bebe lágrimas", "url": "https://www.buscalibre.cl/libro-el-pajaro-que-bebe-lagrimas-n-01-04-el-corazon-del-naga/9788445017098/p/62013231"},
+    {"titulo": "La era del mito", "url": "https://www.buscalibre.cl/libro-la-era-del-mito/9789583056949/p/50543764"},
+    {"titulo": "El límite del cielo", "url": "https://www.buscalibre.cl/libro-el-limite-del-cielo/9788410163171/p/56764769"}
 ]
 
 # Iterar sobre cada URL y procesar los datos
-for url in urls_libros:
-    html = obtener_html(url)
+for libro in libros:
+    html = obtener_html(libro["url"])
     if html:
         precio = extraer_precio(html)
         if precio:
-            # Obtiene el nombre del libro de la URL o puedes especificar manualmente el título
-            titulo_libro = url.split('/')[4]  # Ajusta según cómo esté estructurada tu URL
-            registrar_precio(titulo_libro, precio)
-            print(f"El precio de '{titulo_libro}' es: {precio}")
+            registrar_precio(libro["titulo"], precio)
+            print(f"El precio de '{libro['titulo']}' es: {precio}")
         else:
-            print(f"No se pudo extraer el precio para la URL: {url}")
+            print(f"No se pudo extraer el precio para el libro: {libro['titulo']}")
     else:
-        print(f"No se pudo obtener el HTML para la URL: {url}")
+        print(f"No se pudo obtener el HTML para el libro: {libro['titulo']}")
+
+
