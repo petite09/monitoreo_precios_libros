@@ -20,7 +20,6 @@ def obtener_html(url):
         print(f"Error al obtener la página: {response.status_code} para la URL: {url}")
         return None
 
-
 # Función para extraer el precio del script que contiene dataLayer
 def extraer_precio(html):
     soup = BeautifulSoup(html, 'html.parser')
@@ -33,14 +32,13 @@ def extraer_precio(html):
         match = re.search(r"'precio_producto':\s*'(\d+)'", script_tag.string)
         if match:
             precio = match.group(1)  # Captura el valor del precio
-            return int(precio)  # Convertir a entero si es necesario
+            return int(precio)
         else:
             print("No se pudo encontrar el precio en el script.")
             return None
     else:
         print("No se encontró el script de dataLayer.")
         return None
-
 
 # Función para registrar el precio en un archivo CSV
 def registrar_precio(libro, precio):
@@ -57,29 +55,6 @@ def registrar_precio(libro, precio):
         pass
 
     df.to_csv('precios_libros.csv', index=False)
-
-# Función para visualizar la evolución de los precios
-def visualizar_evolucion():
-    df = pd.read_csv('precios_libros.csv')
-
-    # Convertir la columna 'Fecha' a tipo datetime
-    df['Fecha'] = pd.to_datetime(df['Fecha'])
-
-    # Agrupar por título de libro y graficar cada uno
-    for libro in df['Libro'].unique():
-        df_libro = df[df['Libro'] == libro]
-        plt.plot(df_libro['Fecha'], df_libro['Precio'], marker='o', label=libro)
-
-    # Configuración del gráfico
-    plt.xlabel('Fecha')
-    plt.ylabel('Precio')
-    plt.title('Evolución de precios de los libros')
-    plt.legend()
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-
-    # Mostrar el gráfico
-    plt.show()
 
 # Lista de URLs de los libros en Buscalibre
 libros = [
@@ -101,5 +76,6 @@ for libro in libros:
             print(f"No se pudo extraer el precio para el libro: {libro['titulo']}")
     else:
         print(f"No se pudo obtener el HTML para el libro: {libro['titulo']}")
+
 
 
