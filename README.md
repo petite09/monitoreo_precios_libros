@@ -1,7 +1,14 @@
-# Monitoreo de precios de libros desde una lista de deseos ✨
+# Monitoreo de precios de libros de mi Wishlist de Buscalibre ✨
 
 Este es un proyecto desarrollado para el Bootcamp de Latinas in Cloud.
 La idea consiste en utilizar el lenguaje python para crear el código del proyecto y usar los servicios de AWS para su ejecución.
+
+El objetivo de este proyecto es recolectar datos diariamente de los precios 4 libros que me interesa comprar y que se envíe una notificación cuando se detecte una bajada de precio en alguno de los libros.
+Además, quiero poder visualizar semanalmente un gráfico que me muestre los precios de los 4 libros en función de las fechas en que se recolectaron los datos.
+Por el momento, el código (**_Monitore_precios_**) solo extrae el precio de los libros de interés desde la página de buscalibre y guarda los datos (Título, precio y fecha) en un archivo CSV (no tengo nada automatizado aún, solo ejecución manual).
+También tengo un código aparte para la visualización de los datos (_**Visualización_precios)**_, lo que me permite generar un gráfico para ver la evolución de los precios en el tiempo.
+
+A continuación dejo los detalles del proyecto, un esquema de cómo sería la arquitectura en AWS (teóricamente) y lo que queda pendiente del proyecto.
 
 ## Requerimientos:
 
@@ -168,6 +175,7 @@ Finalmente, estos gráficos semanales serán almacendados en formato png en otro
 
 ### Tareas pendientes
 
+Me gustaría modificar la parte de la visualización para tener un gráfico más bonito.
 Tengo pendiente toda la parte de AWS.
 Debo configurar EventBridge para activar las diferentes funciones.
 Me falta integrar la parte de DynamoDB en el código de *Monitoreo_precio*s.
