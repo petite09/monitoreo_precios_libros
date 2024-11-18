@@ -107,6 +107,8 @@ for libro in libros:
 ```
 ### 6. Visualización de los precios
 
+Al inicio tenía este bloque de código en el archivo de Monitoreo_precios, que es el script que extrae los precios, pero decidí dejarlo aparte para poder ejecutarlo de manera semanal (con EventBridge) a diferencia del monitoreo de precios que quiero que se haga diariamente.
+
 #Función para visualizar la evolución de los precios
 
 ```
@@ -138,9 +140,43 @@ def visualizar_evolucion():
 # Llamada a la función para visualizar el gráfico
 visualizar_evolucion()
 ```
+Acá hay un pequeño ejemplo de visualización:
+
+![img_2.png](img_2.png)
+
+### Arquitectura en AWS (teórico)
+Separé el proyecto en 2 partes: una de recolección, almacenamiento de datos, y notificación de bajada de precios y otra parte de visualización de la información.
+
+Acá hay un pequeño diagrama de cómo sería la arquitectura del proyecto:
+
+![img.png](img.png)
+
+En este primer caso, se configura **EventBridge** para que active la fución Lambda que se encarga de recolectar los datos de los precios de manera diaria.
+La función **Lambda** contiene el código para extraer los datos necesarios de las URLs de los libros (como título, precio y fecha de recolección) y los almacena en un archivo CSV que se guardará en un bucket **S3**.
+Los datos obtenidos también se guardarán en una tabla en **DynamoDB**. Si se detecta una bajada de precio, se puede configurar para que escriba un atributo adicional en DynamoDB que indique este evento.
+**DynamoDB Stream** verifica si hay un evento de bajada de precio y activa una función Lambda en caso de detectar una baja de precio.
+La siguiente función **Lambda**, que se activa por la verificación de DynamoDB Stream, contiene el código para un SNS que permite notificar esta bajada de precio. 
+
+
+![img_1.png](img_1.png)
+
+Para este segundo caso, está el tema de la visualización de los datos.
+La idea es generar gráficos de manera semanal y no diariamente como el caso de la recolección de los datos.
+Se configura **EventBridge** para que active la función Lambda de visualización.
+Esta función **Lambda** utiliza el archivo CSV almacenado en el bucket **S3** de la imagen anterior para generar un gráfico que muestre los precios de cada libro en función de las fechas de recolección de datos.
+Finalmente, estos gráficos semanales serán almacendados en formato png en otro bucket **S3**.
 
 ### Tareas pendientes
 
-Arquitectura AWS
+Tengo pendiente toda la parte de AWS.
+Debo configurar EventBridge para activar las diferentes funciones.
+Me falta integrar la parte de DynamoDB en el código de *Monitoreo_precio*s.
+También tengo que escribir el código necesario para hacer el sistema de notificación.
+Debo adaptar el código que ya tengo para el monitoreo de precios a los servicios de AWS en general.
 
-Acá hay un pequeño diagrama de cómo sería la arquitectura 
+
+### Últimas acotaciones
+Me imagino que todo esto podría hacerse en un solo gran código y quizás no depender de tantas funciones Lambda, pero por el momento esta era la forma más fácil que tenía mi cerebro para procesar toda esta información.
+Seguiré estudiando para poder agregar lo que me falta y quede completamente funcional y para poder implementar mejoras al proyecto en general.
+
+Muchas gracias a las chicas que impartieron el bootcamp. Pude confirmar que esto es algo que me gusta y me entretiene mucho y que definitivamente quiero seguir aprendiendo 💖
