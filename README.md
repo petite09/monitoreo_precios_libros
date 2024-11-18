@@ -158,11 +158,11 @@ Acá hay un pequeño diagrama de cómo sería la arquitectura del proyecto:
 
 ![img.png](img.png)
 
-En este primer caso, se configura **EventBridge** para que active la fución Lambda que se encarga de recolectar los datos de los precios de manera diaria.
-La función **Lambda** contiene el código para extraer los datos necesarios de las URLs de los libros (como título, precio y fecha de recolección) y los almacena en un archivo CSV que se guardará en un bucket **S3**.
+En este primer caso, se configura **EventBridge** para que active la fución Lambda (1) que se encarga de recolectar los datos de los precios de manera diaria.
+La función **Lambda (1)** contiene el código para extraer los datos necesarios de las URLs de los libros (como título, precio y fecha de recolección) y los almacena en un archivo CSV que se guardará en un bucket **S3 (1)**.
 Los datos obtenidos también se guardarán en una tabla en **DynamoDB**. Si se detecta una bajada de precio, se puede configurar para que escriba un atributo adicional en DynamoDB que indique este evento.
-**DynamoDB Stream** verifica si hay un evento de bajada de precio y activa una función Lambda en caso de detectar una baja de precio.
-La siguiente función **Lambda**, que se activa por la verificación de DynamoDB Stream, contiene el código para un SNS que permite notificar esta bajada de precio. 
+**DynamoDB Stream** verifica si hay un evento de bajada de precio y activa una función Lambda (2) en caso de detectar una baja de precio.
+La siguiente función **Lambda (2)**, que se activa por la verificación de DynamoDB Stream, contiene el código para un SNS que permite notificar esta bajada de precio. 
 
 
 ![img_1.png](img_1.png)
@@ -170,8 +170,8 @@ La siguiente función **Lambda**, que se activa por la verificación de DynamoDB
 Para este segundo caso, está el tema de la visualización de los datos.
 La idea es generar gráficos de manera semanal y no diariamente como el caso de la recolección de los datos.
 Se configura **EventBridge** para que active la función Lambda de visualización.
-Esta función **Lambda** utiliza el archivo CSV almacenado en el bucket **S3** de la imagen anterior para generar un gráfico que muestre los precios de cada libro en función de las fechas de recolección de datos.
-Finalmente, estos gráficos semanales serán almacendados en formato png en otro bucket **S3**.
+Esta función **Lambda (3)** utiliza el archivo CSV almacenado en el bucket **S3 (1)** de la imagen anterior para generar un gráfico que muestre los precios de cada libro en función de las fechas de recolección de datos.
+Finalmente, estos gráficos semanales serán almacendados en formato png en otro bucket **S3 (2)**.
 
 ### Tareas pendientes
 
