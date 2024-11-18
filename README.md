@@ -175,16 +175,16 @@ Finalmente, estos gráficos semanales serán almacendados en formato png en otro
 
 ### Tareas pendientes
 
-Me gustaría modificar la parte de la visualización para tener un gráfico más bonito.
-Tengo pendiente toda la parte de AWS.
-Debo configurar EventBridge para activar las diferentes funciones.
-Me falta integrar la parte de DynamoDB en el código de *Monitoreo_precio*s.
-También tengo que escribir el código necesario para hacer el sistema de notificación.
-Debo adaptar el código que ya tengo para el monitoreo de precios a los servicios de AWS en general.
+- Me gustaría modificar la parte de la visualización para tener un gráfico más bonito.
+- Tengo pendiente toda la parte de AWS.
+- Debo configurar EventBridge para activar las diferentes funciones.
+- Me falta integrar la parte de DynamoDB en el código de *Monitoreo_precio*s.
+- También tengo que escribir el código necesario para hacer el sistema de notificación.
+- Debo adaptar el código que ya tengo para el monitoreo de precios a los servicios de AWS en general.
 
 
 ### Últimas acotaciones
 Me imagino que todo esto podría hacerse en un solo gran código y quizás no depender de tantas funciones Lambda, pero por el momento esta era la forma más fácil que tenía mi cerebro para procesar toda esta información.
-Seguiré estudiando para poder agregar lo que me falta y quede completamente funcional y para poder implementar mejoras al proyecto en general.
+Seguiré estudiando para poder agregar lo que me falta y que quede completamente funcional y para poder implementar mejoras al proyecto en general.
 
 Muchas gracias a las chicas que impartieron el bootcamp. Pude confirmar que esto es algo que me gusta y me entretiene mucho y que definitivamente quiero seguir aprendiendo 💖
