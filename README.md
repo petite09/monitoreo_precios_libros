@@ -149,7 +149,7 @@ visualizar_evolucion()
 ```
 Acá hay un pequeño ejemplo de visualización:
 
-![img_3.png](img_3.png)
+!![img_2.png](img_2.png)
 
 ### Arquitectura en AWS (teórico)
 Separé el proyecto en 2 partes: una de recolección, almacenamiento de datos, y notificación de bajada de precios y otra parte de visualización de la información.
